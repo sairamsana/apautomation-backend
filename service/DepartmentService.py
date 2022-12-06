@@ -5,7 +5,7 @@ from flask_smorest import Blueprint, abort
 from models import DepartmentModel
 from schemas.schemas import DepartmentSchema
 import pprint
-from database.SQLSession import session,db_persist
+from database.SQLSession import sqlsession,db_persist
 
 blp = Blueprint("Department", __name__, description="Operations on department")
 
@@ -19,8 +19,8 @@ class DepartmentService(MethodView):
         pprint.pprint(deptData)
         try:
             dept = DepartmentModel(**deptData)
-            session.add(dept)
-            session.flush()
+            sqlsession.add(dept)
+            sqlsession.flush()
             return dept
         except KeyError:
             abort(404,message="dept not found")
@@ -29,7 +29,7 @@ class DepartmentService(MethodView):
     @blp.response(200,DepartmentSchema(many=True))
     def get(self):
         try:
-            res = session.query(DepartmentModel).all()
+            res = sqlsession.query(DepartmentModel).all()
             return res
         except KeyError:
             abort(404,message="user not found")
@@ -43,13 +43,13 @@ class DepartmentServiceById(MethodView):
     @blp.response(201,DepartmentSchema)
     def put(self,deptData,dept_id):
         try:
-            res = session.query(DepartmentModel).get(dept_id)
+            res = sqlsession.query(DepartmentModel).get(dept_id)
             if not res:
                 abort(404,message="dept not found")
             dept = DepartmentModel(**deptData)
             dept.deptid = res.deptid
-            session.merge(dept)
-            session.flush()
+            sqlsession.merge(dept)
+            sqlsession.flush()
             return dept
         except KeyError:
             abort(404,message="dept not found")
@@ -58,7 +58,7 @@ class DepartmentServiceById(MethodView):
     @blp.response(200,DepartmentSchema)
     def get(self,dept_id):
         try:
-            res = session.query(DepartmentModel).get(dept_id)
+            res = sqlsession.query(DepartmentModel).get(dept_id)
             return res
         except KeyError:
             abort(404,message="user not found")
@@ -66,10 +66,10 @@ class DepartmentServiceById(MethodView):
     @db_persist
     def delete(self,dept_id):
         try:
-            res = session.query(DepartmentModel).get(dept_id)
+            res = sqlsession.query(DepartmentModel).get(dept_id)
             if not res:
                 abort(404,message="dept not found")
-            session.delete(res)
+            sqlsession.delete(res)
             return {"message":"deleted successfully"}
         except KeyError:
             abort(404,message="user not found")

@@ -34,6 +34,8 @@ class Constants:
     # dont change salk key at any reason
     SALK_KEY = '88cb71c9c7e0b8cc065ef32639ac166f'
 
+    UPLOAD_FOLDER = 'E:/Projects/apautomation-backend/uploads'
+
     # sairamsana88cb71c9c7e0b8cc065ef32639ac166f
 
     # DB Connection

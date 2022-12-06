@@ -15,6 +15,6 @@ class Connector:
         Database="apautomation"
         Driver="ODBC Driver 17 for SQL Server"
         db_con = "mssql+pyodbc:///?odbc_connect=%s" % params
-        engine = create_engine(db_con)
+        engine = create_engine(db_con,echo=True)
         # con = engine.connect()
         return engine

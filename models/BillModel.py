@@ -16,6 +16,9 @@ class BillModel(Base):
     __tablename__ = 'bills'
     billid = Column(String, primary_key=True, default=generate_uuid)
     name = Column(String(256), unique=False, nullable=False)
+    filename = Column(String(256), unique=False, nullable=False)
+    billstatus = Column(String(256), unique=False, nullable=False)
+    retail = Column(String(256), unique=False, nullable=False)
     amount = Column(FLOAT(128), unique=False, nullable=False)
     tax = Column(FLOAT(15), unique=False, nullable=False)
     billdate = Column(Date, unique=False, nullable=False)
@@ -24,9 +27,12 @@ class BillModel(Base):
     user = relationship("UserModel", back_populates="bills")
     approvals = relationship("ApprovalsModel",back_populates="billl")
 
-    def __init__(self,name,amount,tax,billdate,deptname):
+    def __init__(self,name,amount,tax,billdate,deptname,filename,retail,billstatus):
         self.name = name
         self.amount = amount
         self.tax = tax
         self.billdate = billdate
         self.deptname = deptname
+        self.filename = filename
+        self.retail = retail
+        self.billstatus = billstatus
